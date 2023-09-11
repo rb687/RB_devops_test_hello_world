@@ -22,7 +22,8 @@ Run this command from your pipenv shell -
 pytest --cov=RB_devops_test_hello_world --cov-report=html --cov-report=term --verbose
 This will create a terminal output and a html report of unit test coverage
 
-
+There is a known bug in pytest where it doesnt tell you exactly which lines are not coverage. For this,
+You can also use coverage module like - coverage run -m pytest && coverage report
 
 <B>High Level decisions made:</B>
 
