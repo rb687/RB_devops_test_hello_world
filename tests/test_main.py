@@ -24,7 +24,7 @@ def test_hello_world_health_check_status_code(client):
 @patch("main.user_exists", Mock(return_value=True))
 @patch("main.get_dob_message", Mock(return_value="1993-09-09"))
 def test_hello_world_get_success(client):
-    resp = client.get("/Hello/richa")
+    resp = client.get("/hello/richa")
     assert b"1993-09-09" in resp.data
 
 
@@ -32,14 +32,14 @@ def test_hello_world_get_success(client):
 @patch("main.user_exists", Mock(return_value=False))
 @patch("main.get_dob_message", Mock(return_value=None))
 def test_hello_world_get_204(client):
-    resp = client.get("/Hello/richa")
+    resp = client.get("/hello/richa")
     assert resp.status_code == 204
 
 @patch("main.is_username_valid", Mock(return_value=False))
 @patch("main.user_exists", Mock(return_value=False))
 @patch("main.get_dob_message", Mock(return_value=None))
 def test_hello_world_get_400(client):
-    resp = client.get("/Hello/richa123")
+    resp = client.get("/hello/richa123")
     assert resp.status_code == 400
 
 
@@ -48,17 +48,17 @@ def test_hello_world_get_400(client):
 @patch("main.get_dob_message", Mock(return_value=None))
 def test_hello_world_put_success(client):
     mock_data = {'dateOfBirth': '1993-09-09'}
-    resp = client.put("/Hello/richa", json=mock_data)
+    resp = client.put("/hello/richa", json=mock_data)
     assert resp.status_code == 204
 
 @patch("main.is_request_valid", Mock(return_value=False))
 def test_hello_world_put_failure(client):
     mock_data = {'dateOfBirth': '1993-09-09'}
-    resp = client.put("/Hello/richa", json=mock_data)
+    resp = client.put("/hello/richa", json=mock_data)
     assert resp.status_code == 400
 
 @patch("main.is_request_valid", Mock(return_value=False))
 def test_hello_world_put_failure(client):
     mock_data = {'dateOfBirth': '1993-09-09'}
-    resp = client.post("/Hello/richa", json=mock_data)
+    resp = client.post("/hello/richa", json=mock_data)
     assert resp.status_code == 405
