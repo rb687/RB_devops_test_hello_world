@@ -1,15 +1,14 @@
 version: 1.0
-node: python-3.8 #Increase it as is available in the system.
+node: python-3.10 #Increase it as is available in the system.
 
 publisher:
   type: email
-  to: support_sre_dl@revolut.net, engineer_dl@revolut.net #Letting the teams know that a deployment has started.
+  to: support_sre_dl@revolut.net, engineer_dl@revolut.net #Letting the teams know that a deployment has started or any issues happened.
 
 repo:
   entitlment: RB_app_deployer #This is for making sure you have the right entitlements to run a deployment.
-  collection:
   artifact: RB_devops_test_hello_world
-  scripts:
+  scripts: #After getting the artifact copying and making the right folder structure on the deployment instance
     - mkdir -p fileupload/lib
     - cp -rf lib/* fileupload/lib/
     - cp *.yml fileupload/
@@ -20,7 +19,7 @@ testsight:
   enabled: true
   testReportDir: 'test-reports'
 
-sonarDetails:
+sonarDetails: # Run test cases and code smells
   additionalProperties: "-X; -Dsonar.verbose=true;-Dsonar.log.level=TRACE;-DSonar.sources=RB_devops_test_hello_world;-Dsonar.python.coverage.reportPath=coverage.xml
 
 buildConfig:
@@ -36,19 +35,20 @@ mapping: #There should be a mapping for each branch which goes to different envi
         # 1. Determine the current 'live' environment. Lets call it Green env.
         # 2. Deploy the dependencies, create any new services needed etc and the code to the 'non-live' environment. Lets call it blue env.
         # 3. Once deployment is finished, do functional tests. Ideally, it should be done using automated scripts using pkgs like selenium.
-        #    OR do a manual functional testing if the selenium tests are not (depending on the situation). If doing a manual
-        #    check, we need a 'stop for input' ie. deployment process stops until someone goes and click a proceed button. SRE would come in the picture here.
+        #    OR do a manual functional testing if the selenium tests are not available(depending on the situation). If doing a manual
+        #    check, we need a 'stop for input' check ie. deployment process stops until someone goes and click a proceed button. SRE would come in the picture here.
         # 4. If all tests passes (assuming going via selenium test route), switch the live DNS to the 'non-live' env in-turn,
-        #    turning the earlier 'live' env to 'non-live' ie. now the blue env takes traffic. And also turn the earlier live DNS to non-live DNS.
-        #    If any test fails, rollback to the previous version and break. Send notification/create a high severity incident ticket for investigation.
+        #    turning the earlier 'live' env to 'non-live' ie. now the blue env takes traffic. And also point the non-live DNS to green env ie. the green env
+        #    is now your 'non-live' env and the DR/non-live URLs point to green env.
+        #    If any test fails for any reason, rollback to the previous version and break. Send notification/create a high severity incident ticket for investigation.
         # 5. Deploy the dependencies on Green env since now its non-live.
         # 6. Once deployment is finished, perform the selenium tests again.
-        # 7. Once successful, send notification. Leave the live DNS pointed to the blue env as this helps check the site reliability tests as well.
+        # 7. Once successful, send notification. Leave the live DNS pointed to the blue env as this helps check the site reliability as well.
         # 8. Note:
-        #     a. If there are multi regional deployments, you will need to finish Step 1-4 for all regions before proceeding to Step 5.
+        #     a. If there are multi regional deployments, we will need to finish Step 1-4 for all regions before proceeding to Step 5.
         #     b. If there are monitoring for both PROD and DR (which there should be), depending on lower env testing of how long the deployment takes
-        #         we might also need to turn the monitoring off temporarily to avoid any false positive incidents being created for a down env while
-        #         dpeloyment is in progress.
+        #         we might also need to turn the monitoring alerts off temporarily for the environment where deployment is going on
+        #         to avoid any false positive incidents being created for a down env while deployment is in progress.
 
 
 

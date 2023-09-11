@@ -6,19 +6,19 @@ applications:
     memory: 5G
     disk_quota: 10000M #ONLY if it is required. Depending on the default value and the need for the app, we can ignore this.
     command: python ./main.py
-    instances: 5 #How many subsequent calls do you want to make to the API. Ideally it should be auto-scalable
+    instances: 5 #How many parallel calls do you want to make to the API. Ideally it should be auto-scalable
     routes:
       - route: hello-world-birthday.revolut.net # This is sort of like a DNS alias for your service. Sometimes
-      #it needs to be managed outside the manifest file. This is also where you would confirm alias for different zones/countries along with
-      #Some settings on the instance.
+      # it needs to be managed outside the manifest file. This is also where you would confirm alias for different
+      # zones/countries along with Some settings on the instance.
     services:
-      - Connection_To_DB #This is opening ports between the 2 services between API code base and where the DB is hosted.
+      # Usually services can be defined in a JSON file with all the details and then a create service and bind service command called
+      - Connection_To_DB # This is opening ports between the 2 services between API code base and where the DB is hosted.
       #It could be a mixture of on-prem and cloud or both on cloud.
       - Connection_To_Splunk #To forward the logs
       - Any_Other_connections_or_services_needed. #Refer to the arch diagram.
     health-check-type: http,https
     path: .
     env:
-      PYTHON_PATH:
-      LIBDIR:
-      #These are env variables you want to setup for the system which is common across the system
+      PYTHON_PATH: #python path based on the system used
+      #These are env variables you want to setup for the system which is common across the env
