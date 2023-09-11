@@ -10,13 +10,14 @@ This app exposes a few simple HTTP APIs endpoints.
    Response: 200 OK
    Response Paylod: { “message”: “Hello, <username>! Your birthday is in N day(s)”
    }
-
+-----------------------------
 **<b>How to run this locally:</b>**
 1. Clone the repo
 2. cd RB_devops_test_hello_world
 3. pipenv install --dev (if you dont do --dev, dev packages wont be installed and you wont be able to run anything requiring those pkgs)
 4. pipenv run python main.py 
 
+-----------------------------
 **<b> How to run the test?</b>**
 Run this command from your pipenv shell -
 pytest --cov=RB_devops_test_hello_world --cov-report=html --cov-report=term --verbose
@@ -25,7 +26,7 @@ This will create a terminal output and a html report of unit test coverage
 There is a known bug in pytest where it doesnt tell you exactly which lines are not coverage. For this,
 You can also use coverage module like - coverage run -m pytest && coverage report
 
-
+-----------------------------
 **<B>High Level decisions made:</B>**
 
 1. MySQL DB is used because of wide spread availability of multiple different formats. Also, a personal use license is free of cost. In PROD environment, we should be relying on Oracle given all the DB management facilities available in it.
