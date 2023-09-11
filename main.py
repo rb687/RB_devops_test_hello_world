@@ -46,7 +46,7 @@ def hello_world(username):
     else:
         message = "Illegal call made using method, payload and ip " + request.method + request.json
         log.warning(message)
-        #Dont need to return anything, flask will automatically return a 400
+        #Dont need to return anything, flask will automatically return a 405
 
 
 
