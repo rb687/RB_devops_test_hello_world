@@ -3,6 +3,7 @@ from lib.common_utils import is_username_valid, user_exists, get_dob_message, is
 import lib.config as config
 from lib.config import log
 from lib.constants import ERROR_RESPONSE_MESSAGE
+from waitress import serve
 
 app = Flask(__name__)
 
@@ -12,7 +13,7 @@ def hello_world_health_check():
     return "I am up and running", 200
 
 
-@app.route("/Hello/<username>", methods=["GET", "PUT"])
+@app.route("/hello/<username>", methods=["GET", "PUT"])
 def hello_world(username):
     # Ideally we should be using an authentication test here ie. only let authorized users to enter
     # otherwise throw 401. But keeping it simple for now as this is a test code
@@ -51,4 +52,5 @@ def hello_world(username):
 
 
 if __name__ == "__main__":
-    app.run(host='localhost', port=5555)
+    #app.run(host='localhost', port=5555)
+    serve(app, host='0.0.0.0', port=5555)
