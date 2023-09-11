@@ -1,0 +1,19 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+sqlalchemy = "*"
+flask = "*"
+datetime = "*"
+pymysql = "*"
+
+[dev-packages]
+pytest = "*"
+pytest-cov = "*"
+requests-mock = "*"
+pytest-mock = "*"
+
+[requires]
+python_version = "3.8"
